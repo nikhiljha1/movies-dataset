@@ -24,15 +24,32 @@ def load_data():
 
 df = load_data()
 
+with st.sidebar:
+    st.markdown("Welcome to my pilot interactive dashboard")
+
 # Show a multiselect widget with the genres using `st.multiselect`.
-genres = st.multiselect(
-    "Genres",
-    df.genre.unique(),
-    ["Action", "Adventure", "Biography", "Comedy", "Drama", "Horror"],
+
+st.markdown(
+    """
+<style>
+span[data-baseweb="tag"] {
+  background-color: orange !important;
+}
+</style>
+""",
+    unsafe_allow_html=True,
 )
 
+with st.sidebar:
+    genres = st.multiselect(
+        "Genres",
+        df.genre.unique(),
+        ["Action", "Adventure", "Biography", "Comedy", "Drama", "Horror"],
+    )
+
 # Show a slider widget with the years using `st.slider`.
-years = st.slider("Years", 1986, 2006, (2000, 2016))
+with st.sidebar:
+    years = st.slider("Years", 1986, 2016, (2001, 2006))
 
 # Filter the dataframe based on the widget input and reshape it.
 df_filtered = df[(df["genre"].isin(genres)) & (df["year"].between(years[0], years[1]))]
@@ -53,6 +70,17 @@ st.dataframe(
 df_chart = pd.melt(
     df_reshaped.reset_index(), id_vars="year", var_name="genre", value_name="gross"
 )
+
+st.dataframe(
+    df_chart, 
+    hide_index=True,
+    use_container_width=True,
+    column_config={"year": st.column_config.TextColumn("Year"),
+                   "gross": st.column_config.NumberColumn("Box Office")}
+    )
+
+st.bokeh_chart()
+
 chart = (
     alt.Chart(df_chart)
     .mark_line()
