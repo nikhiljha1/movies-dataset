@@ -1,6 +1,7 @@
 import altair as alt
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 
 # Show the page title and description.
 st.set_page_config(page_title="Movies dataset", page_icon="🎬")
@@ -17,6 +18,7 @@ st.write(
 # Load the data from a CSV. We're caching this so it doesn't reload every time the app
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
+
 def load_data():
     df = pd.read_csv("data/movies_genres_summary.csv")
     return df
@@ -58,6 +60,7 @@ df_reshaped = df_filtered.pivot_table(
 )
 df_reshaped = df_reshaped.sort_values(by="year", ascending=False)
 
+st.divider()
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
@@ -65,6 +68,7 @@ st.dataframe(
     use_container_width=True,
     column_config={"year": st.column_config.TextColumn("Year")},
 )
+st.divider()
 
 # Display the data as an Altair chart using `st.altair_chart`.
 df_chart = pd.melt(
@@ -78,6 +82,19 @@ st.dataframe(
     column_config={"year": st.column_config.TextColumn("Year"),
                    "gross": st.column_config.NumberColumn("Box Office")}
     )
+
+
+st.divider()
+
+chart2 = df_chart[['year','gross','genre']]
+
+st.scatter_chart(chart2,x = 'year', y = 'genre',
+                 color = 'genre',
+                 size = 'gross',
+                 use_container_width=True)
+
+
+st.divider()
 
 chart = (
     alt.Chart(df_chart)
