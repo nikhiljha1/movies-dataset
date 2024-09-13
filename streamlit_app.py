@@ -79,8 +79,6 @@ st.dataframe(
                    "gross": st.column_config.NumberColumn("Box Office")}
     )
 
-st.bokeh_chart()
-
 chart = (
     alt.Chart(df_chart)
     .mark_line()
