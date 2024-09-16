@@ -68,7 +68,6 @@ st.dataframe(
     use_container_width=True,
     column_config={"year": st.column_config.TextColumn("Year")},
 )
-st.divider()
 
 # Display the data as an Altair chart using `st.altair_chart`.
 df_chart = pd.melt(
@@ -77,11 +76,11 @@ df_chart = pd.melt(
 
 st.divider()
 
-# fig = plt.figure(figsize = (6,6))
+fig = plt.figure(figsize = (6,6))
 
-# barh_chart = plt.bar(data = df_chart, height = 'gross', x = 'genre')
+barh_chart = plt.bar(data = df_chart, height = 'gross', x = 'genre')
 
-# st.pyplot(fig)
+st.pyplot(fig)
 
 st.divider()
 
