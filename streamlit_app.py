@@ -75,24 +75,13 @@ df_chart = pd.melt(
     df_reshaped.reset_index(), id_vars="year", var_name="genre", value_name="gross"
 )
 
-st.dataframe(
-    df_chart, 
-    hide_index=True,
-    use_container_width=True,
-    column_config={"year": st.column_config.TextColumn("Year"),
-                   "gross": st.column_config.NumberColumn("Box Office")}
-    )
-
-
 st.divider()
 
-chart2 = df_chart[['year','gross','genre']]
+fig = plt.figure(figsize = (6,6))
 
-st.scatter_chart(chart2,x = 'year', y = 'genre',
-                 color = 'genre',
-                 size = 'gross',
-                 use_container_width=True)
+barh_chart = plt.bar(data = df_chart, height = 'gross', x = 'genre')
 
+st.pyplot(fig)
 
 st.divider()
 
